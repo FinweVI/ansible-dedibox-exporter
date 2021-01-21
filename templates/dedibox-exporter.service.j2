@@ -1,0 +1,24 @@
+#
+# Ansible managed
+#
+[Unit]
+Description=Dedibox Exporter for Prometheus
+After=network-online.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/dedibox-exporter.pid
+User=dedibox-exporter
+Group=dedibox-exporter
+PermissionsStartOnly=true
+EnvironmentFile=/etc/default/dedibox-exporter
+ExecStart=/usr/local/bin/dedibox-exporter \
+  -listen-address={{ dedibox_exporter_address }}:{{ dedibox_exporter_port }} \
+  -metric-path={{ dedibox_exporter_metric_path }}
+
+SyslogIdentifier=dedibox-exporter
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

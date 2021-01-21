@@ -1,0 +1,36 @@
+---
+
+- name: create dedibox-exporter system group
+  group:
+    name: dedibox-exporter
+    system: true
+    state: present
+
+- name: create dedibox-exporter system user
+  user:
+    name: dedibox-exporter
+    system: true
+    shell: "/sbin/nologin"
+    group: dedibox-exporter
+    createhome: false
+
+- name: install dedibox-exporter from sources
+  block:
+    - name: install dependencies
+      package:
+        name: "{{ dedibox_exporter_dependencies }}"
+        state: present
+
+    - name: go get dedibox-exporter
+      command: "{{ ansible_local.golang.general.home }}/bin/go get -u {{ dedibox_exporter_repository }}@{{ dedibox_exporter_version }}"
+      environment:
+        GO111MODULE: "on"
+        GOPATH: "{{ golang_gopath }}"
+
+    - name: propagate dedibox-exporter binaries
+      copy:
+        remote_src: yes
+        src: "{{ ansible_env.HOME }}/go/bin/dedibox-exporter"
+        dest: /usr/local/bin/dedibox-exporter
+        mode: '0755'
+      notify: restart dedibox-exporter

@@ -1,0 +1,25 @@
+---
+- name: create systemd service unit
+  template:
+    src: dedibox-exporter.service.j2
+    dest: /etc/systemd/system/dedibox-exporter.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart dedibox-exporter
+
+- name: Create dedibox-exporter main configuration file
+  template:
+    src: dedibox-exporter.default.j2
+    dest: /etc/default/dedibox-exporter
+    owner: dedibox-exporter
+    group: dedibox-exporter
+    mode: 0640
+  notify: restart dedibox-exporter
+
+- name: Enable and start Dedibox Exporter systemd unit
+  systemd:
+    name: dedibox-exporter
+    enabled: true
+    state: started
+    daemon_reload: true

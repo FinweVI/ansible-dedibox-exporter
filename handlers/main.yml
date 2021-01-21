@@ -1,0 +1,9 @@
+---
+- name: restart dedibox-exporter
+  become: true
+  service:
+    name: dedibox-exporter
+    state: restarted
+  tags:
+    - dedibox_exporter_run
+
