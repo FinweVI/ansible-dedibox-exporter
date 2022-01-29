@@ -19,6 +19,8 @@ All variables which can be overridden are stored in [defaults/main.yml](defaults
 | `dedibox_exporter_port` | 9876 | port on which dedibox-exporter listens |
 | `dedibox_exporter_repository ` | github.com/FinweVI/dedibox-exporter | github link to the source code |
 | `dedibox_exporter_metric_path` | /metrics | HTTP Route to serve the metrics on |
+| `dedibox_exporter_log_level` | 1 | Log Level (0=Debug, 1=Info, 2=Warning, 3=Error, 4=Fatal) |
+| `dedibox_exporter_collectors` | [] | List of collector to enable |
 | `dedibox_exporter_api_token` | None | Online.net API Token |
 
 See the [defaults/main.yml](defaults/main.yml) file for examples.
