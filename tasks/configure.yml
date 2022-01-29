@@ -8,7 +8,7 @@
     mode: 0644
   notify: restart dedibox-exporter
 
-- name: Create dedibox-exporter main configuration file
+- name: Create dedibox-exporter env file
   template:
     src: dedibox-exporter.default.j2
     dest: /etc/default/dedibox-exporter

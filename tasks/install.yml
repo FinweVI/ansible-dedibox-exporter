@@ -14,23 +14,37 @@
     group: dedibox-exporter
     createhome: false
 
-- name: install dedibox-exporter from sources
+- name: install dedibox-exporter from github
   block:
-    - name: install dependencies
-      package:
-        name: "{{ dedibox_exporter_dependencies }}"
-        state: present
+    - name: download dedibox-exporter binary to local folder
+      get_url:
+        url: "https://{{ dedibox_exporter_repository }}/releases/download/v{{ dedibox_exporter_version }}/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
+        dest: "/tmp/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
+        checksum: "sha256:https://{{ dedibox_exporter_repository }}/releases/download/v{{ dedibox_exporter_version }}/checksums.txt"
+      register: _download_archive
+      until: _download_archive is succeeded
+      retries: 5
+      delay: 2
+      # run_once: true # <-- this cannot be set due to multi-arch support
+      check_mode: false
 
-    - name: go get dedibox-exporter
-      command: "{{ ansible_local.golang.general.home }}/bin/go get -u {{ dedibox_exporter_repository }}@{{ dedibox_exporter_version }}"
-      environment:
-        GO111MODULE: "on"
-        GOPATH: "{{ golang_gopath }}"
+    - name: unpack dedibox-exporter binaries
+      unarchive:
+        remote_src: yes
+        src: "/tmp/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
+        dest: "/tmp"
+        creates: "/tmp/dedibox-exporter"
+      check_mode: false
 
-    - name: propagate dedibox-exporter binaries
+    - name: propagate dedibox-exporter binary
       copy:
         remote_src: yes
-        src: "{{ ansible_env.HOME }}/go/bin/dedibox-exporter"
-        dest: /usr/local/bin/dedibox-exporter
-        mode: '0755'
-      notify: restart dedibox-exporter
+        src: "/tmp/{{ item }}"
+        dest: "{{ _dedibox_exporter_binary_install_dir }}/{{ item }}"
+        mode: 0755
+        owner: root
+        group: root
+      with_items:
+        - dedibox-exporter
+      notify:
+        - restart dedibox-exporter

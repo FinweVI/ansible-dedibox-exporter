@@ -1,9 +1,11 @@
 ---
-dedibox_exporter_version: latest
+dedibox_exporter_version: "0.1.1"
 dedibox_exporter_repository: "github.com/FinweVI/dedibox-exporter"
 
 dedibox_exporter_address: "127.0.0.1"
 dedibox_exporter_port: 9539
 dedibox_exporter_metric_path: '/metrics'
+dedibox_exporter_log_level: 1
+dedibox_exporter_collectors: []
 
 # dedibox_exporter_api_token: 'YOUR_API_TOKEN'
