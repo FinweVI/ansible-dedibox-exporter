@@ -5,7 +5,7 @@ Exporter to report metrics fetched from the Online.net API.
 
 ## Requirements
 
-- Ansible >= 2.8
+- Ansible >= 2.11
 
 ## Role Variables
 

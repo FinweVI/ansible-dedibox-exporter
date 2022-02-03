@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+
+  vars:
+    dedibox_exporter_api_token: "test_token"
+
+  tasks:
+    - name: "Include ansible-dedibox-exporter"
+      include_role:
+        name: "ansible-dedibox-exporter"
