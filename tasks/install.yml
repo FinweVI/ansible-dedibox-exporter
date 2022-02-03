@@ -18,9 +18,9 @@
   block:
     - name: download dedibox-exporter binary to local folder
       get_url:
-        url: "https://{{ dedibox_exporter_repository }}/releases/download/v{{ dedibox_exporter_version }}/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
+        url: "{{ dedibox_exporter_dl_base_url }}/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
         dest: "/tmp/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
-        checksum: "sha256:https://{{ dedibox_exporter_repository }}/releases/download/v{{ dedibox_exporter_version }}/checksums.txt"
+        checksum: "sha256:{{ dedibox_exporter_dl_base_url }}/checksums.txt"
       register: _download_archive
       until: _download_archive is succeeded
       retries: 5

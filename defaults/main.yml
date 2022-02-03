@@ -1,6 +1,7 @@
 ---
 dedibox_exporter_version: "0.1.1"
 dedibox_exporter_repository: "github.com/FinweVI/dedibox-exporter"
+dedibox_exporter_dl_base_url: "https://{{ dedibox_exporter_repository }}/releases/download/v{{ dedibox_exporter_version }}"
 
 dedibox_exporter_address: "127.0.0.1"
 dedibox_exporter_port: 9539
