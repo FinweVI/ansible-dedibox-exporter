@@ -30,7 +30,7 @@
 
     - name: unpack dedibox-exporter binaries
       unarchive:
-        remote_src: yes
+        remote_src: true
         src: "/tmp/dedibox-exporter_{{ dedibox_exporter_version }}_linux_{{ go_arch }}.tar.gz"
         dest: "/tmp"
         creates: "/tmp/dedibox-exporter"
@@ -38,7 +38,7 @@
 
     - name: propagate dedibox-exporter binary
       copy:
-        remote_src: yes
+        remote_src: true
         src: "/tmp/{{ item }}"
         dest: "{{ _dedibox_exporter_binary_install_dir }}/{{ item }}"
         mode: 0755
