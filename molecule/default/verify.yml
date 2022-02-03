@@ -1,0 +1,58 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - name: Include defaults vars
+    include_vars:
+      file: "../../defaults/main.yml"
+
+  - name: Include custom vars
+    include_vars:
+      file: "../../vars/main.yml"
+
+  - name: Check Dedibox User
+    getent:
+      database: passwd
+      key: dedibox-exporter
+
+  - name: Check Dedibox Group
+    getent:
+      database: group
+      key: dedibox-exporter
+
+  - name: Stat the Dedibox binary
+    ansible.builtin.stat:
+      path: "{{ _dedibox_exporter_binary_install_dir }}/dedibox-exporter"
+    register: binary
+
+  - name: Ensure Dedibox binary have the right properties
+    assert:
+      that:
+        - "binary.stat.pw_name == 'root'"
+        - "binary.stat.mode == '0755'"
+        - "binary.stat.exists"
+
+  - name: Stat the Dedibox env file
+    ansible.builtin.stat:
+      path: "/etc/default/dedibox-exporter"
+    register: env_file
+
+  - name: Ensure Dedibox env file have the right properties
+    assert:
+      that:
+        - "env_file.stat.pw_name == 'root'"
+        - "env_file.stat.mode == '0600'"
+        - "env_file.stat.exists"
+
+  - name: Get Dedibox Service Status
+    ansible.builtin.systemd:
+      name: dedibox-exporter
+    register: service
+
+  - name: Ensure Dedibox Service is Active
+    assert:
+      that:
+        - "service.status.ActiveState == 'active'"
