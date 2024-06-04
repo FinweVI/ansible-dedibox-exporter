@@ -6,17 +6,17 @@ galaxy_info:
   role_name: ansible_dedibox_exporter
   license: MIT
   company: none
-  min_ansible_version: 2.11
+  min_ansible_version: 10
 
   platforms:
     - name: Ubuntu
       versions:
-        - bionic
-        - focal
+        - jammy
+        - noble
     - name: Debian
       versions:
-        - buster
         - bullseye
+        - bookwork
 
   galaxy_tags:
     - system
@@ -25,3 +25,4 @@ galaxy_info:
     - alerting
     - dedibox
     - scaleway
+    - online.net
